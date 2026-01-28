@@ -211,7 +211,76 @@ function GetBid(req, res) {
 	});
 }
 
-function CloseBid(req, res) {}
+function CloseBid(req, res) {
+	const fs = require("fs");
+	let rawdata = fs.readFileSync("data/users.json");
+	let usersList = JSON.parse(rawdata);
+
+	let token = req.headers["authorization"];
+
+	if (!token) {
+		res.status(400).json({ message: "Erreur : Token manquant" });
+		return;
+	}
+
+	if (!req.body.idBid) {
+		res.status(400).json({ message: "Erreur : ID d'enchère manquant" });
+		return;
+	}
+
+	let currentUser = null;
+	for (let user of usersList) {
+		if (user.token === token) {
+			currentUser = user;
+			break;
+		}
+	}
+
+	if (!currentUser) {
+		res.status(401).json({ message: "Erreur : Token invalide" });
+		return;
+	}
+
+	let idBid = parseInt(req.body.idBid);
+	if (isNaN(idBid)) {
+		res.status(400).json({ message: "Erreur : ID d'enchère invalide" });
+		return;
+	}
+
+	let bidsRawData = fs.readFileSync("data/bid.json");
+	let bidsList = JSON.parse(bidsRawData);
+
+	let bid = bidsList.find((b) => b.id === idBid);
+
+	if (!bid) {
+		res.status(400).json({ message: "Erreur : Enchère introuvable" });
+		return;
+	}
+
+	if (bid.seller_id !== currentUser.id) {
+		res.status(400).json({
+			message: "Erreur : Vous n'êtes pas le vendeur de cette enchère",
+		});
+		return;
+	}
+
+	if (bid.end_date && new Date(bid.end_date) < new Date()) {
+		res.status(400).json({
+			message: "Erreur : Cette enchère est déjà fermée",
+		});
+		return;
+	}
+
+	bid.end_date = new Date().toISOString();
+
+	let bidsData = JSON.stringify(bidsList, null, 2);
+	fs.writeFileSync("data/bid.json", bidsData);
+
+	let usersData = JSON.stringify(usersList, null, 2);
+	fs.writeFileSync("data/users.json", usersData);
+
+	res.json({ message: "OK", data: bid });
+}
 
 module.exports = {
 	AddBid,
