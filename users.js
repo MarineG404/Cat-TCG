@@ -1,7 +1,5 @@
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
-const myPlaintextPassword = "s0/\/\P4$$w0rD";
-const someOtherPlaintextPassword = "not_bacon";
 
 var TokenGenerator = require("token-generator")({
 	salt: "your secret ingredient for this magic recipe",
@@ -85,7 +83,37 @@ function LoginUser(req, res) {
 	res.status(400).json({ message: "Erreur : Utilisateur non trouvé" });
 }
 
+function GetUser(req, res) {
+	const fs = require("fs");
+	let rawdata = fs.readFileSync("data/users.json");
+	let usersList = JSON.parse(rawdata);
+
+	let token = req.headers["authorization"];
+	if (!token) {
+		res.status(400).json({ message: "Erreur : Token manquant" });
+		return;
+	}
+
+	for (let user of usersList) {
+		if (user.token === token) {
+			res.json({
+				message: "OK",
+				data: {
+					id: user.id,
+					username: user.username,
+					collection: user.collection,
+				},
+			});
+			return;
+		}
+	}
+
+	res.status(400).json({ message: "Erreur : Utilisateur non trouvé" });
+
+}
+
 module.exports = {
 	RegisterUser,
 	LoginUser,
+	GetUser,
 };
