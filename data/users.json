@@ -1,142 +1,138 @@
 [
-  {
-    "id": 1,
-    "username": "Exemple",
-    "password": "exemple",
-    "collection": [],
-    "paw": 0
-  },
-  {
-    "id": 2,
-    "username": "Example",
-    "collection": [],
-    "paw": 0
-  },
-  {
-    "id": 3,
-    "username": "Example2S",
-    "password": "dezd",
-    "collection": [],
-    "paw": 0
-  },
-  {
-    "id": 4,
-    "username": "Example2S",
-    "password": "dezd",
-    "collection": [],
-    "paw": 0
-  },
-  {
-    "id": 5,
-    "username": "Example2S",
-    "password": "dezd",
-    "collection": [],
-    "paw": 0
-  },
-  {
-    "id": 6,
-    "username": "Example2SS",
-    "password": "dezd",
-    "collection": [],
-    "paw": 0
-  },
-  {
-    "id": 7,
-    "username": "Example2SSs",
-    "password": "dezd",
-    "collection": [],
-    "token": "2d8cbhgjfjdaee",
-    "paw": 0
-  },
-  {
-    "id": 8,
-    "username": "Example2SSss",
-    "password": "dezd",
-    "collection": [
-      150,
-      25,
-      2,
-      150,
-      1,
-      2,
-      150,
-      150,
-      150,
-      25,
-      150,
-      2,
-      3,
-      1,
-      1,
-      1,
-      150,
-      25,
-      25,
-      1,
-      3,
-      2,
-      25,
-      2,
-      2,
-      2,
-      25,
-      1,
-      2,
-      1,
-      25,
-      1,
-      1,
-      1,
-      1,
-      {
-        "id": 2,
-        "nb": 4
-      },
-      {
-        "id": 1,
-        "nb": 1
-      }
-    ],
-    "token": "1973bhgjfjdbdg",
-    "lastBooster": 1769596310580,
-    "paw": 0
-  },
-  {
-    "id": 9,
-    "username": "Example2SSssszszs",
-    "password": "$2b$10$0kEVZLp9OGVF/2.RxfjqoOGKK32.C5DJlHc56U7EUqiJlT/NtTjiu",
-    "collection": [],
-    "token": null,
-    "paw": 0
-  },
-  {
-    "id": 10,
-    "username": "Marine",
-    "password": "$2b$10$GkLDoqCY7kd6JsZn50sna.RFBiDOdnYX2uJEWW5dw3p6qYz7d2/2.",
-    "collection": [
-      {
-        "id": 2,
-        "nb": 55
-      },
-      {
-        "id": 1,
-        "nb": 50
-      },
-      {
-        "id": 3,
-        "nb": 48
-      },
-      {
-        "id": 25,
-        "nb": 20
-      },
-      {
-        "id": 150,
-        "nb": 1
-      }
-    ],
-    "token": "aa7cbhgjfjjijf",
-    "lastBooster": 1769596782342,
-    "paw": 1150
-  }
+	{
+		"id": 1,
+		"username": "Exemple",
+		"password": "exemple",
+		"collection": [],
+		"paw": 0
+	},
+	{
+		"id": 2,
+		"username": "Example",
+		"collection": [],
+		"paw": 0
+	},
+	{
+		"id": 3,
+		"username": "Example2S",
+		"password": "dezd",
+		"collection": [],
+		"paw": 0
+	},
+	{
+		"id": 4,
+		"username": "Example2S",
+		"password": "dezd",
+		"collection": [],
+		"paw": 0
+	},
+	{
+		"id": 5,
+		"username": "Example2S",
+		"password": "dezd",
+		"collection": [],
+		"paw": 0
+	},
+	{
+		"id": 6,
+		"username": "Example2SS",
+		"password": "dezd",
+		"collection": [],
+		"paw": 0
+	},
+	{
+		"id": 7,
+		"username": "Example2SSs",
+		"password": "dezd",
+		"collection": [],
+		"token": "2d8cbhgjfjdaee",
+		"paw": 0
+	},
+	{
+		"id": 8,
+		"username": "Example2SSss",
+		"password": "dezd",
+		"collection": [
+			150,
+			25,
+			2,
+			150,
+			1,
+			2,
+			150,
+			150,
+			150,
+			25,
+			150,
+			2,
+			3,
+			1,
+			1,
+			1,
+			150,
+			25,
+			25,
+			1,
+			3,
+			2,
+			25,
+			2,
+			2,
+			2,
+			25,
+			1,
+			2,
+			1,
+			25,
+			1,
+			1,
+			1,
+			1,
+			{
+				"id": 2,
+				"nb": 4
+			},
+			{
+				"id": 1,
+				"nb": 1
+			}
+		],
+		"token": "1973bhgjfjdbdg",
+		"lastBooster": 1769596310580,
+		"paw": 0
+	},
+	{
+		"id": 9,
+		"username": "Example2SSssszszs",
+		"password": "$2b$10$0kEVZLp9OGVF/2.RxfjqoOGKK32.C5DJlHc56U7EUqiJlT/NtTjiu",
+		"collection": [],
+		"token": null,
+		"paw": 0
+	},
+	{
+		"id": 10,
+		"username": "Marine",
+		"password": "$2b$10$GkLDoqCY7kd6JsZn50sna.RFBiDOdnYX2uJEWW5dw3p6qYz7d2/2.",
+		"collection": [
+			{
+				"id": 2,
+				"nb": 55
+			},
+			{
+				"id": 1,
+				"nb": 6
+			},
+			{
+				"id": 3,
+				"nb": 48
+			},
+			{
+				"id": 25,
+				"nb": 20
+			}
+		],
+		"token": "aa7cbhgjfjjijf",
+		"lastBooster": 1769596782342,
+		"paw": 1150
+	}
 ]

@@ -141,10 +141,20 @@ function ConvertCard(req, res) {
 		return;
 	}
 
-	if (cardInCollection.nb < 2) {
+	// Vérifier les enchères actives pour cette carte
+	let bidsRawData = fs.readFileSync("data/bid.json");
+	let bidsList = JSON.parse(bidsRawData);
+	let activeBidsCount = bidsList.filter(
+		(bid) => bid.card_id === cardId && bid.seller_id === currentUser.id,
+	).length;
+
+	// Calculer les cartes disponibles (total - cartes aux enchères)
+	let availableCards = cardInCollection.nb - activeBidsCount;
+
+	if (availableCards < 2) {
 		res.status(400).json({
 			message:
-				"Erreur : Vous devez posséder au moins 2 exemplaires pour convertir cette carte",
+				"Erreur : Vous devez posséder au moins 2 exemplaires disponibles (hors enchères) pour convertir cette carte",
 		});
 		return;
 	}

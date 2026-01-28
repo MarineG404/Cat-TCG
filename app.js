@@ -4,6 +4,7 @@ const swaggerSpec = require("./swagger");
 
 const users = require("./users");
 const card = require("./cards");
+const bids = require("./bids");
 const app = express();
 
 app.use(express.json());
@@ -434,6 +435,101 @@ app.put("/booster", card.OpenBooster);
  *                   example: "Erreur : Token invalide"
  */
 app.post("/convert", card.ConvertCard);
+
+/**
+ * @swagger
+ * /bid:
+ *   post:
+ *     summary: Créer une nouvelle enchère
+ *     description: Permet à un utilisateur de mettre une carte de sa collection aux enchères
+ *     tags:
+ *       - Enchères
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: authorization
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Token d'authentification
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - cardId
+ *             properties:
+ *               cardId:
+ *                 type: integer
+ *                 description: ID de la carte à mettre aux enchères
+ *                 example: 15
+ *               bid:
+ *                 type: integer
+ *                 description: Prix de départ de l'enchère (optionnel, 0 par défaut)
+ *                 example: 100
+ *     responses:
+ *       200:
+ *         description: Enchère créée avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: OK
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       example: 1
+ *                     card_id:
+ *                       type: integer
+ *                       example: 15
+ *                     seller_id:
+ *                       type: integer
+ *                       example: 2
+ *                     end_date:
+ *                       type: string
+ *                       nullable: true
+ *                       example: null
+ *                     bidder_id:
+ *                       type: integer
+ *                       nullable: true
+ *                       example: null
+ *                     bid:
+ *                       type: integer
+ *                       example: 100
+ *       400:
+ *         description: Erreur lors de la création de l'enchère
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Erreur : Vous ne possédez pas cette carte"
+ *       401:
+ *         description: Token invalide
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Erreur : Token invalide"
+ */
+app.post("/bid", bids.AddBid);
+app.put("/bid", bids.PlaceBid);
+app.get("/bid", bids.GetBids);
+app.get("/bid", bids.GetBid);
+app.delete("/bid", bids.CloseBid);
 
 app.listen(3000, () => {
 	console.log(`API TCG listening on http://localhost:3000`);

@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "card_id": 1,
+    "seller_id": 10,
+    "end_date": null,
+    "bidder_id": null,
+    "bid": "1000"
+  },
+  {
+    "id": 2,
+    "card_id": 1,
+    "seller_id": 10,
+    "end_date": null,
+    "bidder_id": null,
+    "bid": "1000"
+  },
+  {
+    "id": 3,
+    "card_id": 1,
+    "seller_id": 10,
+    "end_date": null,
+    "bidder_id": null,
+    "bid": "1000"
+  },
+  {
+    "id": 4,
+    "card_id": 1,
+    "seller_id": 10,
+    "end_date": null,
+    "bidder_id": null,
+    "bid": "1000"
+  },
+  {
+    "id": 5,
+    "card_id": 1,
+    "seller_id": 10,
+    "end_date": null,
+    "bidder_id": null,
+    "bid": "1000"
+  },
+  {
+    "id": 6,
+    "card_id": 1,
+    "seller_id": 10,
+    "end_date": null,
+    "bidder_id": null,
+    "bid": "1000"
+  }
+]
