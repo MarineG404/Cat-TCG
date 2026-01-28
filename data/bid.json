@@ -44,7 +44,7 @@
     "card_id": 1,
     "seller_id": 10,
     "end_date": null,
-    "bidder_id": null,
-    "bid": "1000"
+    "bidder_id": 8,
+    "bid": "1112"
   }
 ]

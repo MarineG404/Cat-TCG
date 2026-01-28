@@ -526,6 +526,96 @@ app.post("/convert", card.ConvertCard);
  *                   example: "Erreur : Token invalide"
  */
 app.post("/bid", bids.AddBid);
+
+/**
+ * @swagger
+ * /bid:
+ *   put:
+ *     summary: Placer une enchère sur une carte
+ *     description: Permet à un utilisateur de placer une enchère sur une carte mise aux enchères par un autre utilisateur
+ *     tags:
+ *       - Enchères
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: authorization
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Token d'authentification
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - idBid
+ *               - bid
+ *             properties:
+ *               idBid:
+ *                 type: integer
+ *                 description: ID de l'enchère sur laquelle placer une offre
+ *                 example: 1
+ *               bid:
+ *                 type: integer
+ *                 description: Montant de l'enchère (doit être supérieur à l'enchère actuelle)
+ *                 example: 150
+ *     responses:
+ *       200:
+ *         description: Enchère placée avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: OK
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       example: 1
+ *                     card_id:
+ *                       type: integer
+ *                       example: 15
+ *                     seller_id:
+ *                       type: integer
+ *                       example: 2
+ *                     end_date:
+ *                       type: string
+ *                       nullable: true
+ *                       example: null
+ *                     bidder_id:
+ *                       type: integer
+ *                       example: 3
+ *                     bid:
+ *                       type: integer
+ *                       example: 150
+ *       400:
+ *         description: Erreur lors de l'enchère
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Erreur : Votre enchère doit être supérieure à l'enchère actuelle"
+ *       401:
+ *         description: Token invalide
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Erreur : Token invalide"
+ */
 app.put("/bid", bids.PlaceBid);
 app.get("/bid", bids.GetBids);
 app.get("/bid", bids.GetBid);
