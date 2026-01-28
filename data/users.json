@@ -1,0 +1,51 @@
+[
+	{
+		"id": 1,
+		"username": "Exemple",
+		"password": "exemple",
+		"collection": []
+	},
+	{
+		"id": 2,
+		"username": "Example",
+		"collection": []
+	},
+	{
+		"id": 3,
+		"username": "Example2S",
+		"password": "dezd",
+		"collection": []
+	},
+	{
+		"id": 4,
+		"username": "Example2S",
+		"password": "dezd",
+		"collection": []
+	},
+	{
+		"id": 5,
+		"username": "Example2S",
+		"password": "dezd",
+		"collection": []
+	},
+	{
+		"id": 6,
+		"username": "Example2SS",
+		"password": "dezd",
+		"collection": []
+	},
+	{
+		"id": 7,
+		"username": "Example2SSs",
+		"password": "dezd",
+		"collection": [],
+		"token": "2d8cbhgjfjdaee"
+	},
+	{
+		"id": 8,
+		"username": "Example2SSss",
+		"password": "dezd",
+		"collection": [],
+		"token": "1973bhgjfjdbdg"
+	}
+]
