@@ -38,6 +38,7 @@ function RegisterUser(req, res) {
 		username: username,
 		password: newPassword,
 		collection: [],
+		paw: 0,
 	};
 
 	usersList.push(newUser);
@@ -112,6 +113,7 @@ function GetUser(req, res) {
 					id: user.id,
 					username: user.username,
 					collection: user.collection,
+					paw: user.paw,
 				},
 			});
 			return;

@@ -3,43 +3,50 @@
     "id": 1,
     "username": "Exemple",
     "password": "exemple",
-    "collection": []
+    "collection": [],
+    "paw": 0
   },
   {
     "id": 2,
     "username": "Example",
-    "collection": []
+    "collection": [],
+    "paw": 0
   },
   {
     "id": 3,
     "username": "Example2S",
     "password": "dezd",
-    "collection": []
+    "collection": [],
+    "paw": 0
   },
   {
     "id": 4,
     "username": "Example2S",
     "password": "dezd",
-    "collection": []
+    "collection": [],
+    "paw": 0
   },
   {
     "id": 5,
     "username": "Example2S",
     "password": "dezd",
-    "collection": []
+    "collection": [],
+    "paw": 0
   },
   {
     "id": 6,
     "username": "Example2SS",
     "password": "dezd",
-    "collection": []
+    "collection": [],
+    "paw": 0
   },
   {
     "id": 7,
     "username": "Example2SSs",
     "password": "dezd",
     "collection": [],
-    "token": "2d8cbhgjfjdaee"
+    "token": "2d8cbhgjfjdaee",
+    "paw": 0
   },
   {
     "id": 8,
@@ -91,14 +98,16 @@
       }
     ],
     "token": "1973bhgjfjdbdg",
-    "lastBooster": 1769596310580
+    "lastBooster": 1769596310580,
+    "paw": 0
   },
   {
     "id": 9,
     "username": "Example2SSssszszs",
     "password": "$2b$10$0kEVZLp9OGVF/2.RxfjqoOGKK32.C5DJlHc56U7EUqiJlT/NtTjiu",
     "collection": [],
-    "token": null
+    "token": null,
+    "paw": 0
   },
   {
     "id": 10,
@@ -107,26 +116,27 @@
     "collection": [
       {
         "id": 2,
-        "nb": 36
+        "nb": 55
       },
       {
         "id": 1,
-        "nb": 32
+        "nb": 50
       },
       {
         "id": 3,
-        "nb": 34
+        "nb": 48
       },
       {
         "id": 25,
-        "nb": 19
+        "nb": 20
       },
       {
         "id": 150,
-        "nb": 4
+        "nb": 1
       }
     ],
     "token": "aa7cbhgjfjjijf",
-    "lastBooster": 1769596421911
+    "lastBooster": 1769596782342,
+    "paw": 1150
   }
 ]
