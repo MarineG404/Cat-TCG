@@ -80,10 +80,18 @@
       1,
       1,
       1,
-      1
+      1,
+      {
+        "id": 2,
+        "nb": 4
+      },
+      {
+        "id": 1,
+        "nb": 1
+      }
     ],
     "token": "1973bhgjfjdbdg",
-    "lastBooster": 1769595832736
+    "lastBooster": 1769596310580
   },
   {
     "id": 9,
@@ -91,5 +99,34 @@
     "password": "$2b$10$0kEVZLp9OGVF/2.RxfjqoOGKK32.C5DJlHc56U7EUqiJlT/NtTjiu",
     "collection": [],
     "token": null
+  },
+  {
+    "id": 10,
+    "username": "Marine",
+    "password": "$2b$10$GkLDoqCY7kd6JsZn50sna.RFBiDOdnYX2uJEWW5dw3p6qYz7d2/2.",
+    "collection": [
+      {
+        "id": 2,
+        "nb": 36
+      },
+      {
+        "id": 1,
+        "nb": 32
+      },
+      {
+        "id": 3,
+        "nb": 34
+      },
+      {
+        "id": 25,
+        "nb": 19
+      },
+      {
+        "id": 150,
+        "nb": 4
+      }
+    ],
+    "token": "aa7cbhgjfjjijf",
+    "lastBooster": 1769596421911
   }
 ]

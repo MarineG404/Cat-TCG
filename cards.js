@@ -75,7 +75,13 @@ function OpenBooster(req, res) {
 	}
 
 	for (let card of booster) {
-		currentUser.collection.push(card.id);
+		let existingCard = currentUser.collection.find(c => c.id === card.id);
+
+		if (existingCard) {
+			existingCard.nb++;
+		} else {
+			currentUser.collection.push({ id: card.id, nb: 1 });
+		}
 	}
 
 	currentUser.lastBooster = Date.now();
