@@ -67,7 +67,7 @@ function LoginUser(req, res) {
 				res.json({
 					message: "OK",
 					data: {
-						token: user.token,
+						token: TokenGenerator.generate(),
 					},
 				});
 				return;
