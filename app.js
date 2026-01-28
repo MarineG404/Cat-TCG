@@ -3,12 +3,14 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./swagger");
 
 const users = require("./users");
+const card = require("./cards");
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use("/", swaggerUi.serve);
+app.get("/", swaggerUi.setup(swaggerSpec));
 
 /**
  * @swagger
@@ -244,6 +246,31 @@ app.patch("/user", users.UpdateUser);
  *                   type: string
  */
 app.post("/disconnect", users.DisconnectUser);
+
+/**
+ * @swagger
+ * /cards:
+ *   get:
+ *     summary: Récupérer la liste des cartes disponibles
+ *     tags:
+ *       - Cartes
+ *     responses:
+ *       200:
+ *         description: Liste des cartes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: OK
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ */
+app.get("/cards", card.GetCards);
 
 app.listen(3000, () => {
 	console.log(`API TCG listening on http://localhost:3000`);
