@@ -13,6 +13,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/register", users.RegisterUser);
+app.get("/login", users.LoginUser);
 
 app.listen(3000, () => {
 	console.log(`API TCG listening on http://localhost:3000`);

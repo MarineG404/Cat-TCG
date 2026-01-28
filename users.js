@@ -1,3 +1,8 @@
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
+const myPlaintextPassword = "s0/\/\P4$$w0rD";
+const someOtherPlaintextPassword = "not_bacon";
+
 var TokenGenerator = require("token-generator")({
 	salt: "your secret ingredient for this magic recipe",
 	timestampMap: "abcdefghij", // 10 chars array for obfuscation proposes
@@ -29,10 +34,11 @@ function RegisterUser(req, res) {
 		}
 	}
 
+	newPassword = bcrypt.hashSync(password, saltRounds);
 	let newUser = {
 		id: usersList.length + 1,
 		username: username,
-		password: password,
+		password: newPassword,
 		collection: [],
 		token: TokenGenerator.generate(),
 	};
@@ -45,6 +51,11 @@ function RegisterUser(req, res) {
 	res.json({ message: "OK" });
 }
 
+function LoginUser(req, res) {
+	// To be implemented
+}
+
 module.exports = {
 	RegisterUser,
+	LoginUser,
 };
