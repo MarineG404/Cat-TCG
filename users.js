@@ -145,9 +145,36 @@ function UpdateUser(req, res) {
 	}
 }
 
+function DisconnectUser(req, res) {
+	const fs = require("fs");
+	let rawdata = fs.readFileSync("data/users.json");
+	let usersList = JSON.parse(rawdata);
+
+	let token = req.headers["authorization"];
+	if (!token) {
+		res.status(400).json({ message: "Erreur : Token manquant" });
+		return;
+	}
+
+	for (let user of usersList) {
+		if (user.token === token) {
+			user.token = null;
+
+			let data = JSON.stringify(usersList, null, 2);
+			fs.writeFileSync("data/users.json", data);
+
+			res.json({ message: "Déconnecté avec succès" });
+			return;
+		}
+	}
+
+	res.status(400).json({ message: "Erreur : Utilisateur non trouvé" });
+}
+
 module.exports = {
 	RegisterUser,
 	LoginUser,
 	GetUser,
 	UpdateUser,
+	DisconnectUser,
 };
