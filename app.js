@@ -278,7 +278,6 @@ app.post("/disconnect", users.DisconnectUser);
  *                         example: Chat de gouttière
  *                       rarity:
  *                         type: string
- *                         enum: [common, rare, legendary]
  *                         example: common
  */
 app.get("/cards", card.GetCards);
@@ -321,7 +320,6 @@ app.get("/cards", card.GetCards);
  *                         type: string
  *                       rarity:
  *                         type: string
- *                         enum: [common, rare, legendary]
  *       400:
  *         description: Token manquant
  *         content:
@@ -331,7 +329,7 @@ app.get("/cards", card.GetCards);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Erreur : Token manquant
+ *                   example: "Erreur : Token manquant"
  *       401:
  *         description: Token invalide
  *         content:
@@ -341,7 +339,7 @@ app.get("/cards", card.GetCards);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Erreur : Token invalide
+ *                   example: "Erreur : Token invalide"
  *       429:
  *         description: Délai non respecté (5 minutes entre chaque booster)
  *         content:
@@ -351,7 +349,7 @@ app.get("/cards", card.GetCards);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Erreur : Vous devez attendre 5 minutes avant d'ouvrir un nouveau booster
+ *                   example: "Erreur : Vous devez attendre 5 minutes avant d'ouvrir un nouveau booster"
  */
 app.put("/booster", card.OpenBooster);
 
@@ -407,7 +405,6 @@ app.put("/booster", card.OpenBooster);
  *                       example: Maine Coon
  *                     rarity:
  *                       type: string
- *                       enum: [common, rare, legendary]
  *                       example: rare
  *                     pawEarned:
  *                       type: integer
@@ -424,7 +421,7 @@ app.put("/booster", card.OpenBooster);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Erreur : Vous devez posséder au moins 2 exemplaires pour convertir cette carte
+ *                   example: "Erreur : Vous devez posséder au moins 2 exemplaires pour convertir cette carte"
  *       401:
  *         description: Token invalide
  *         content:
@@ -434,7 +431,7 @@ app.put("/booster", card.OpenBooster);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Erreur : Token invalide
+ *                   example: "Erreur : Token invalide"
  */
 app.post("/convert", card.ConvertCard);
 
