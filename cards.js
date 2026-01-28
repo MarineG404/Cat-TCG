@@ -48,10 +48,30 @@ function OpenBooster(req, res) {
 	}
 
 	let cardsList = JSON.parse(rawdata);
+
+	function drawCardByRarity() {
+		const random = Math.random() * 100;
+		let targetRarity;
+
+		if (random < 80) {
+			targetRarity = "common";
+		} else if (random < 95) {
+			targetRarity = "rare";
+		} else {
+			targetRarity = "legendary";
+		}
+
+		const availableCards = cardsList.filter(
+			(card) => card.rarity === targetRarity,
+		);
+		return availableCards[
+			Math.floor(Math.random() * availableCards.length)
+		];
+	}
+
 	let booster = [];
 	for (let i = 0; i < 5; i++) {
-		let randomIndex = Math.floor(Math.random() * cardsList.length);
-		booster.push(cardsList[randomIndex]);
+		booster.push(drawCardByRarity());
 	}
 
 	for (let card of booster) {
