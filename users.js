@@ -115,13 +115,10 @@ function GetUser(req, res) {
 				},
 			});
 			return;
-		} else {
-			res.status(400).json({ message: "Erreur : Token invalide" });
-			return;
 		}
 	}
 
-	res.status(400).json({ message: "Erreur : Utilisateur non trouvé" });
+	res.status(401).json({ message: "Erreur : Token invalide" });
 }
 
 function UpdateUser(req, res) {

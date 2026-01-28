@@ -272,6 +272,40 @@ app.post("/disconnect", users.DisconnectUser);
  */
 app.get("/cards", card.GetCards);
 
+/**
+ * @swagger
+ * /booster:
+ *   put:
+ *     summary: Ouvrir un booster de cartes
+ *     tags:
+ *       - Cartes
+ *     responses:
+ *       200:
+ *         description: Booster ouvert avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: OK
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *       400:
+ *         description: Erreur lors de l'ouverture du booster
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ */
+app.put("/booster", card.OpenBooster);
+
 app.listen(3000, () => {
 	console.log(`API TCG listening on http://localhost:3000`);
 });
