@@ -184,8 +184,126 @@ router.post("/bid", bidsController.AddBid);
  */
 router.put("/bid", bidsController.PlaceBid);
 
+/**
+ * @swagger
+ * /bid:
+ *   get:
+ *     summary: Récupérer toutes les enchères
+ *     description: Retourne la liste complète de toutes les enchères actives et terminées
+ *     tags:
+ *       - Enchères
+ *     responses:
+ *       200:
+ *         description: Liste des enchères récupérée avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: OK
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         example: 1
+ *                       card_id:
+ *                         type: integer
+ *                         example: 15
+ *                       seller_id:
+ *                         type: integer
+ *                         example: 2
+ *                       end_date:
+ *                         type: string
+ *                         nullable: true
+ *                         example: null
+ *                       bidder_id:
+ *                         type: integer
+ *                         nullable: true
+ *                         example: 3
+ *                       bid:
+ *                         type: integer
+ *                         example: 150
+ */
 router.get("/bid", bidsController.GetBids);
+
+/**
+ * @swagger
+ * /bid/{id}:
+ *   get:
+ *     summary: Récupérer une enchère spécifique
+ *     description: Retourne les détails d'une enchère en fonction de son ID
+ *     tags:
+ *       - Enchères
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID de l'enchère à récupérer
+ *         example: 1
+ *     responses:
+ *       200:
+ *         description: Enchère récupérée avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: OK
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       example: 1
+ *                     card_id:
+ *                       type: integer
+ *                       example: 15
+ *                     seller_id:
+ *                       type: integer
+ *                       example: 2
+ *                     end_date:
+ *                       type: string
+ *                       nullable: true
+ *                       example: null
+ *                     bidder_id:
+ *                       type: integer
+ *                       nullable: true
+ *                       example: 3
+ *                     bid:
+ *                       type: integer
+ *                       example: 150
+ *       400:
+ *         description: ID d'enchère invalide
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Erreur : ID d'enchère invalide"
+ *       404:
+ *         description: Enchère introuvable
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Erreur : Enchère introuvable"
+ */
 router.get("/bid/:id", bidsController.GetBid);
+
 router.delete("/bid", bidsController.CloseBid);
 
 module.exports = router;

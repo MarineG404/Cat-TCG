@@ -3,10 +3,6 @@ function AddBid(req, res) {
 	let rawdata = fs.readFileSync("data/users.json");
 	let usersList = JSON.parse(rawdata);
 
-	console.log("Content-Type:", req.headers["content-type"]);
-	console.log("req.body:", req.body);
-	console.log("req.body.cardId:", req.body.cardId);
-
 	let token = req.headers["authorization"];
 
 	if (!token) {
@@ -95,10 +91,6 @@ function PlaceBid(req, res) {
 		return;
 	}
 
-	console.log("Content-Type:", req.headers["content-type"]);
-	console.log("req.body:", req.body);
-	console.log("req.body.idBid:", req.body.idBid);
-
 	if (!req.body.idBid) {
 		res.status(400).json({ message: "Erreur : ID d'enchère manquant" });
 		return;
@@ -184,9 +176,40 @@ function PlaceBid(req, res) {
 	res.json({ message: "OK", data: bid });
 }
 
-function GetBids(req, res) {}
+function GetBids(req, res) {
+	const fs = require("fs");
+	let bidsRawData = fs.readFileSync("data/bid.json");
+	let bidsList = JSON.parse(bidsRawData);
 
-function GetBid(req, res) {}
+	res.json({
+		message: "OK",
+		data: bidsList,
+	});
+}
+
+function GetBid(req, res) {
+	const fs = require("fs");
+	let bidsRawData = fs.readFileSync("data/bid.json");
+	let bidsList = JSON.parse(bidsRawData);
+
+	let idBid = parseInt(req.params.id);
+	if (isNaN(idBid)) {
+		res.status(400).json({ message: "Erreur : ID d'enchère invalide" });
+		return;
+	}
+
+	let bid = bidsList.find((b) => b.id === idBid);
+
+	if (!bid) {
+		res.status(404).json({ message: "Erreur : Enchère introuvable" });
+		return;
+	}
+
+	res.json({
+		message: "OK",
+		data: bid,
+	});
+}
 
 function CloseBid(req, res) {}
 
