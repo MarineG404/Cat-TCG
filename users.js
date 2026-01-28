@@ -69,10 +69,15 @@ function LoginUser(req, res) {
 	for (let user of usersList) {
 		if (user.username === username) {
 			if (bcrypt.compareSync(password, user.password)) {
+				const token = TokenGenerator.generate();
+				user.token = token;
+				let data = JSON.stringify(usersList, null, 2);
+				fs.writeFileSync("data/users.json", data);
+
 				res.json({
 					message: "OK",
 					data: {
-						token: TokenGenerator.generate(),
+						token: token,
 					},
 				});
 				return;
