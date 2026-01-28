@@ -35,6 +35,18 @@ function OpenBooster(req, res) {
 		return;
 	}
 
+	if (currentUser.lastBooster) {
+		const delay = 5; // 5 min
+		const timeSinceLastBooster = Date.now() - currentUser.lastBooster;
+
+		if (timeSinceLastBooster < delay * 60 * 1000) {
+			res.status(429).json({
+				message: `Erreur : Vous devez attendre ${delay} minutes avant d'ouvrir un nouveau booster`,
+			});
+			return;
+		}
+	}
+
 	let cardsList = JSON.parse(rawdata);
 	let booster = [];
 	for (let i = 0; i < 5; i++) {
@@ -45,6 +57,8 @@ function OpenBooster(req, res) {
 	for (let card of booster) {
 		currentUser.collection.push(card.id);
 	}
+
+	currentUser.lastBooster = Date.now();
 
 	let data = JSON.stringify(usersList, null, 2);
 	fs.writeFileSync("data/users.json", data);
