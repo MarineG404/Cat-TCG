@@ -40,7 +40,6 @@ function RegisterUser(req, res) {
 		username: username,
 		password: newPassword,
 		collection: [],
-		token: TokenGenerator.generate(),
 	};
 
 	usersList.push(newUser);
@@ -52,7 +51,38 @@ function RegisterUser(req, res) {
 }
 
 function LoginUser(req, res) {
-	// To be implemented
+	const fs = require("fs");
+	let rawdata = fs.readFileSync("data/users.json");
+	let usersList = JSON.parse(rawdata);
+
+	let username = req.body.username;
+	let password = req.body.password;
+
+	if (!username || !password) {
+		res.status(400).json({ message: "Erreur : Données incomplètes" });
+		return;
+	}
+
+	for (let user of usersList) {
+		if (user.username === username) {
+			if (bcrypt.compareSync(password, user.password)) {
+				res.json({
+					message: "OK",
+					data: {
+						token: user.token,
+					},
+				});
+				return;
+			} else {
+				res.status(400).json({
+					message: "Erreur : Mauvais mot de passe",
+				});
+				return;
+			}
+		}
+	}
+
+	res.status(400).json({ message: "Erreur : Utilisateur non trouvé" });
 }
 
 module.exports = {
