@@ -73,6 +73,10 @@ function AddBid(req, res) {
 
 	let bidsData = JSON.stringify(bidsList, null, 2);
 	fs.writeFileSync("data/bid.json", bidsData);
+
+	let usersData = JSON.stringify(usersList, null, 2);
+	fs.writeFileSync("data/users.json", usersData);
+
 	res.json({
 		message: "OK",
 		data: newBid,
@@ -152,7 +156,15 @@ function PlaceBid(req, res) {
 		return;
 	}
 
-	if (req.body.bid <= bid.bid) {
+	let newBidAmount = parseInt(req.body.bid);
+	if (isNaN(newBidAmount) || newBidAmount <= 0) {
+		res.status(400).json({
+			message: "Erreur : Montant de l'enchère invalide",
+		});
+		return;
+	}
+
+	if (newBidAmount <= bid.bid) {
 		res.status(400).json({
 			message:
 				"Erreur : Votre enchère doit être supérieure à l'enchère actuelle",
@@ -160,14 +172,14 @@ function PlaceBid(req, res) {
 		return;
 	}
 
-	if (currentUser.paw < req.body.bid) {
+	if (currentUser.paw < newBidAmount) {
 		res.status(400).json({
 			message: "Erreur : Vous n'avez pas assez de paw pour cette enchère",
 		});
 		return;
 	}
 
-	bid.bid = req.body.bid;
+	bid.bid = newBidAmount;
 	bid.bidder_id = currentUser.id;
 
 	let bidsData = JSON.stringify(bidsList, null, 2);
@@ -258,17 +270,51 @@ function CloseBid(req, res) {
 	}
 
 	if (bid.seller_id !== currentUser.id) {
-		res.status(400).json({
+		res.status(403).json({
 			message: "Erreur : Vous n'êtes pas le vendeur de cette enchère",
 		});
 		return;
 	}
 
-	if (bid.end_date && new Date(bid.end_date) < new Date()) {
+	if (bid.end_date) {
 		res.status(400).json({
 			message: "Erreur : Cette enchère est déjà fermée",
 		});
 		return;
+	}
+
+	if (!bid.bidder_id) {
+		res.status(400).json({
+			message:
+				"Erreur : Impossible de clôturer une enchère sans enchérisseur",
+		});
+		return;
+	}
+
+	let winner = usersList.find((u) => u.id === bid.bidder_id);
+	if (!winner) {
+		res.status(500).json({
+			message: "Erreur : Enchérisseur introuvable",
+		});
+		return;
+	}
+
+	if (winner.paw < bid.bid) {
+		res.status(400).json({
+			message:
+				"Erreur : L'enchérisseur n'a plus assez de paw pour finaliser l'achat",
+		});
+		return;
+	}
+
+	winner.paw -= bid.bid;
+	currentUser.paw += bid.bid;
+
+	let winnerCard = winner.collection.find((c) => c.id === bid.card_id);
+	if (winnerCard) {
+		winnerCard.nb++;
+	} else {
+		winner.collection.push({ id: bid.card_id, nb: 1 });
 	}
 
 	bid.end_date = new Date().toISOString();
@@ -279,7 +325,15 @@ function CloseBid(req, res) {
 	let usersData = JSON.stringify(usersList, null, 2);
 	fs.writeFileSync("data/users.json", usersData);
 
-	res.json({ message: "OK", data: bid });
+	res.json({
+		message: "OK",
+		data: {
+			bid: bid,
+			winner_id: winner.id,
+			winner_username: winner.username,
+			amount_paid: bid.bid,
+		},
+	});
 }
 
 module.exports = {

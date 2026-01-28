@@ -304,6 +304,88 @@ router.get("/bid", bidsController.GetBids);
  */
 router.get("/bid/:id", bidsController.GetBid);
 
-router.delete("/bid", bidsController.CloseBid);
+/**
+ * @swagger
+ * /bid/close:
+ *   delete:
+ *     summary: Clôturer une enchère
+ *     description: Permet au vendeur de clôturer son enchère. La carte est transférée au plus haut enchérisseur et l'argent au vendeur.
+ *     tags:
+ *       - Enchères
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: authorization
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Token d'authentification
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - idBid
+ *             properties:
+ *               idBid:
+ *                 type: integer
+ *                 description: ID de l'enchère à clôturer
+ *                 example: 1
+ *     responses:
+ *       200:
+ *         description: Enchère clôturée avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: OK
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     bid:
+ *                       $ref: '#/components/schemas/Bid'
+ *                     winner_id:
+ *                       type: integer
+ *                     winner_username:
+ *                       type: string
+ *                     amount_paid:
+ *                       type: integer
+ *       400:
+ *         description: Erreur lors de la clôture
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Erreur : Impossible de clôturer une enchère sans enchérisseur"
+ *       401:
+ *         description: Token invalide
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       403:
+ *         description: Non autorisé (pas le vendeur)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Erreur : Vous n'êtes pas le vendeur de cette enchère"
+ */
+router.delete("/bid/close", bidsController.CloseBid);
 
 module.exports = router;
