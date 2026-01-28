@@ -48,7 +48,7 @@ const options = {
 			},
 		},
 	},
-	apis: ["./app.js", "./users.js", "./cards.js"],
+	apis: ["./src/routes/*.js"],
 };
 
 module.exports = swaggerJsdoc(options);

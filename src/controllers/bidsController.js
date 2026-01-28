@@ -1,5 +1,3 @@
-const { response } = require("./app");
-
 function AddBid(req, res) {
 	const fs = require("fs");
 	let rawdata = fs.readFileSync("data/users.json");
