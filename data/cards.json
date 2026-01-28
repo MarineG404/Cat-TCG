@@ -3,5 +3,7 @@
 	{ "id": 2, "name": "Chat roux", "rarity": "common" },
 	{ "id": 3, "name": "Chat noir", "rarity": "common" },
 	{ "id": 25, "name": "Maine Coon", "rarity": "rare" },
+	{ "id": 50, "name": "Chalameche", "rarity": "rare" },
+	{ "id": 100, "name": "Chapardeur", "rarity": "rare" },
 	{ "id": 150, "name": "Chat cosmique", "rarity": "legendary" }
 ]

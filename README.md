@@ -6,7 +6,7 @@ API de collection de cartes de chats (Trading Card Game).
 
 ```
 Cat-TCG/
-├── server.js                    # Point d'entrée de l'application
+├── app.js                    # Point d'entrée de l'application
 ├── package.json                 # Dépendances et scripts
 ├── data/                        # Données JSON (base de données)
 │   ├── users.json
