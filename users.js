@@ -53,6 +53,11 @@ function LoginUser(req, res) {
 	let rawdata = fs.readFileSync("data/users.json");
 	let usersList = JSON.parse(rawdata);
 
+	if (!req.body) {
+		res.status(400).json({ message: "Erreur : Aucune données" });
+		return;
+	}
+
 	let username = req.body.username;
 	let password = req.body.password;
 
@@ -104,6 +109,9 @@ function GetUser(req, res) {
 					collection: user.collection,
 				},
 			});
+			return;
+		} else {
+			res.status(400).json({ message: "Erreur : Token invalide" });
 			return;
 		}
 	}
