@@ -40,8 +40,11 @@ L'API démarre sur `http://localhost:3000`
 
 ## 📚 Documentation API
 
-La documentation interactive Swagger est disponible à la racine :
-- **URL**: http://localhost:3000/
+[![API Docs](https://img.shields.io/badge/API%20Docs-Swagger%20UI-85EA2D?logo=swagger)](https://MarineG404.github.io/Cat-TCG/)
+
+La documentation interactive est disponible à deux endroits :
+- **GitHub Pages** : https://MarineG404.github.io/Cat-TCG/
+- **En local** : http://localhost:3000/
 
 ## 🎯 Routes Disponibles
 

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Cat TCG - Documentation API 🐱</title>
+		<link
+			rel="stylesheet"
+			href="https://unpkg.com/swagger-ui-dist/swagger-ui.css"
+		/>
+		<style>
+			body {
+				margin: 0;
+				padding: 0;
+			}
+			.topbar {
+				background-color: #1a1a2e !important;
+			}
+			.topbar-wrapper img {
+				content: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 30'><text y='24' font-size='22'>🐱 Cat TCG</text></svg>");
+				width: 120px;
+				height: auto;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="swagger-ui"></div>
+		<script src="https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js"></script>
+		<script src="https://unpkg.com/swagger-ui-dist/swagger-ui-standalone-preset.js"></script>
+		<script>
+			window.onload = function () {
+				SwaggerUIBundle({
+					url: "./swagger.json",
+					dom_id: "#swagger-ui",
+					presets: [
+						SwaggerUIBundle.presets.apis,
+						SwaggerUIStandalonePreset,
+					],
+					layout: "StandaloneLayout",
+					deepLinking: true,
+					defaultModelsExpandDepth: 1,
+					defaultModelExpandDepth: 1,
+				});
+			};
+		</script>
+	</body>
+</html>
