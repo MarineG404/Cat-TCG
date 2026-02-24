@@ -36,7 +36,7 @@ function OpenBooster(req, res) {
 	}
 
 	if (currentUser.lastBooster) {
-		const delay = 0; // 5 min
+		const delay = 5 // minutes
 		const timeSinceLastBooster = Date.now() - currentUser.lastBooster;
 
 		if (timeSinceLastBooster < delay * 60 * 1000) {

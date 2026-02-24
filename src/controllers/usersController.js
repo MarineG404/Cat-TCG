@@ -105,8 +105,12 @@ function GetUser(req, res) {
 		return;
 	}
 
+	let bidsRawData = fs.readFileSync("data/bid.json");
+	let bidsList = JSON.parse(bidsRawData);
+
 	for (let user of usersList) {
 		if (user.token === token) {
+			user.bids = bidsList.filter((bid) => bid.seller_id === user.id);
 			res.json({
 				message: "OK",
 				data: {
@@ -114,6 +118,7 @@ function GetUser(req, res) {
 					username: user.username,
 					collection: user.collection,
 					paw: user.paw,
+					bids: user.bids,
 				},
 			});
 			return;

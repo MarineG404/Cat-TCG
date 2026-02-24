@@ -99,5 +99,39 @@
     "token": "74e0bhgjgbahje",
     "lastBooster": 1769596782342,
     "paw": 1150
+  },
+  {
+    "id": 11,
+    "username": "chacaht",
+    "password": "$2b$10$QGnvE0R9Rgk.mp34CXapNuFmeM1EMrMJrDaipHGrN.I.JH.JQ2vVi",
+    "collection": [
+      {
+        "id": 3,
+        "nb": 7
+      },
+      {
+        "id": 25,
+        "nb": 2
+      },
+      {
+        "id": 1,
+        "nb": 11
+      },
+      {
+        "id": 2,
+        "nb": 6
+      },
+      {
+        "id": 100,
+        "nb": 2
+      },
+      {
+        "id": 150,
+        "nb": 1
+      }
+    ],
+    "paw": 0,
+    "token": "891fbhhbjcccje",
+    "lastBooster": 1771919009235
   }
 ]

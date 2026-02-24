@@ -76,3 +76,6 @@ Authorization: your-token-here
 - **Swagger** - Documentation API
 - **bcrypt** - Hachage de mots de passe ([doc](https://www.npmjs.com/package/bcrypt))
 - **token-generator** - Génération de tokens ([doc](https://www.npmjs.com/package/token-generator))
+
+todo :
+gérer en laissant les sous dans l'enchère

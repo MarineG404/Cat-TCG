@@ -95,6 +95,11 @@ function PlaceBid(req, res) {
 		return;
 	}
 
+	if (!req.body) {
+		res.status(400).json({ message: "Erreur : Corps de la requête manquant" });
+		return;
+	}
+
 	if (!req.body.idBid) {
 		res.status(400).json({ message: "Erreur : ID d'enchère manquant" });
 		return;

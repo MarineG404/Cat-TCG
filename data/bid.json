@@ -46,5 +46,21 @@
     "end_date": "2026-01-28T13:48:28.783Z",
     "bidder_id": 8,
     "bid": "1112"
+  },
+  {
+    "id": 7,
+    "card_id": 150,
+    "seller_id": 11,
+    "end_date": null,
+    "bidder_id": 10,
+    "bid": 20
+  },
+  {
+	"id": 8,
+	"card_id": 100,
+	"seller_id": 11,
+	"end_date": null,
+	"bidder_id": 10,
+	"bid": 20
   }
 ]
