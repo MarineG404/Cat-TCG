@@ -96,7 +96,9 @@ function PlaceBid(req, res) {
 	}
 
 	if (!req.body) {
-		res.status(400).json({ message: "Erreur : Corps de la requête manquant" });
+		res.status(400).json({
+			message: "Erreur : Corps de la requête manquant",
+		});
 		return;
 	}
 
@@ -184,8 +186,27 @@ function PlaceBid(req, res) {
 		return;
 	}
 
+	// refund previous bidder if exists
+	if (bid.tempAmount) {
+		let previousBidder = usersList.find(
+			(u) => u.id === bid.tempAmount.idUser,
+		);
+		if (previousBidder) {
+			previousBidder.paw += bid.tempAmount.amount;
+		}
+	}
+
+	// deduct new bidder's paw
+	currentUser.paw -= newBidAmount;
+
+	let tempAmount = {
+		idUser: currentUser.id,
+		amount: newBidAmount,
+	};
+
 	bid.bid = newBidAmount;
 	bid.bidder_id = currentUser.id;
+	bid.tempAmount = tempAmount;
 
 	let bidsData = JSON.stringify(bidsList, null, 2);
 	fs.writeFileSync("data/bid.json", bidsData);
@@ -304,16 +325,8 @@ function CloseBid(req, res) {
 		return;
 	}
 
-	if (winner.paw < bid.bid) {
-		res.status(400).json({
-			message:
-				"Erreur : L'enchérisseur n'a plus assez de paw pour finaliser l'achat",
-		});
-		return;
-	}
-
-	winner.paw -= bid.bid;
-	currentUser.paw += bid.bid;
+	// use tempAmount to get the actual amount paid by the winner
+	currentUser.paw += bid.tempAmount.amount;
 
 	let winnerCard = winner.collection.find((c) => c.id === bid.card_id);
 	if (winnerCard) {

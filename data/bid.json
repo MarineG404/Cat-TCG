@@ -53,14 +53,18 @@
     "seller_id": 11,
     "end_date": null,
     "bidder_id": 10,
-    "bid": 20
+    "bid": 20,
+    "tempAmount": {
+      "idUser": 10,
+      "amount": 20
+    }
   },
   {
-	"id": 8,
-	"card_id": 100,
-	"seller_id": 11,
-	"end_date": null,
-	"bidder_id": 10,
-	"bid": 20
+    "id": 8,
+    "card_id": 100,
+    "seller_id": 11,
+    "end_date": null,
+    "bidder_id": 6,
+    "bid": 20
   }
 ]
