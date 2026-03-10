@@ -6,15 +6,26 @@ API de collection de cartes de chats (Trading Card Game).
 
 ```
 Cat-TCG/
-├── app.js                    # Point d'entrée de l'application
+├── app.js                       # Point d'entrée de l'application
 ├── package.json                 # Dépendances et scripts
-├── data/                        # Données JSON (base de données)
-│   ├── users.json
-│   ├── cards.json
-│   └── bid.json
+├── .env                         # Variables d'environnement (base de données)
+├── .env.example                 # Exemple de configuration
+├── docs/                        # Documentation Swagger
+│   ├── index.html               # Page GitHub Pages
+│   └── swagger.json             # Spécification OpenAPI
+├── scripts/                     # Scripts utilitaires
+│   └── generate-swagger.js      # Génération de la documentation
+├── .github/
+│   └── workflows/
+│       └── generate-swagger.yml # CI/CD pour la documentation
 └── src/
     ├── config/                  # Configuration
+    │   ├── db.js                # Connexion base de données (Sequelize)
     │   └── swagger.js           # Configuration Swagger/OpenAPI
+    ├── Models/                  # Modèles Sequelize
+    │   ├── User.js              # Modèle utilisateur
+    │   ├── Card.js              # Modèle carte
+    │   └── Bid.js               # Modèle enchère
     ├── controllers/             # Logique métier
     │   ├── usersController.js   # Gestion des utilisateurs
     │   ├── cardsController.js   # Gestion des cartes
@@ -27,6 +38,21 @@ Cat-TCG/
 
 ## 🚀 Démarrage
 
+### Prérequis
+- Node.js
+- Base de données (MariaDB, SQLite, etc.)
+
+### Configuration
+1. Copier le fichier `.env.example` en `.env`
+2. Configurer les variables d'environnement dans `.env` :
+```env
+DATABASE=nom_base
+DATABASE_USER=utilisateur
+DATABASE_PASSWORD=mot_de_passe
+DATABASE_HOST=localhost
+DATABASE_DIALECT=mariadb
+```
+
 ### Installation
 ```bash
 npm install
@@ -37,6 +63,11 @@ npm install
 npm run dev
 ```
 L'API démarre sur `http://localhost:3000`
+
+### Génération de la documentation
+```bash
+npm run docs
+```
 
 ## 📚 Documentation API
 
@@ -76,7 +107,10 @@ Authorization: your-token-here
 ## 🛠️ Technologies
 
 - **Express.js** - Framework web
+- **Sequelize** - ORM pour base de données ([doc](https://sequelize.org/))
+- **MariaDB / SQLite** - Bases de données supportées
 - **Swagger** - Documentation API
 - **bcrypt** - Hachage de mots de passe ([doc](https://www.npmjs.com/package/bcrypt))
 - **token-generator** - Génération de tokens ([doc](https://www.npmjs.com/package/token-generator))
+- **dotenv** - Gestion des variables d'environnement
 
