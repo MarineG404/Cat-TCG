@@ -1,8 +1,7 @@
-function AddBid(req, res) {
-	const fs = require("fs");
-	let rawdata = fs.readFileSync("data/users.json");
-	let usersList = JSON.parse(rawdata);
+const Bid = require("../Models/Bid");
+const User = require("../Models/User");
 
+async function AddBid(req, res) {
 	let token = req.headers["authorization"];
 
 	if (!token) {
@@ -21,13 +20,7 @@ function AddBid(req, res) {
 		return;
 	}
 
-	let currentUser = null;
-	for (let user of usersList) {
-		if (user.token === token) {
-			currentUser = user;
-			break;
-		}
-	}
+	let currentUser = await User.findOne({ where: { token: token } });
 
 	if (!currentUser) {
 		res.status(401).json({ message: "Erreur : Token invalide" });
@@ -43,12 +36,9 @@ function AddBid(req, res) {
 		return;
 	}
 
-	let bidsRawData = fs.readFileSync("data/bid.json");
-	let bidsList = JSON.parse(bidsRawData);
-
-	let activeBidsCount = bidsList.filter(
-		(bid) => bid.card_id === idCard && bid.seller_id === currentUser.id,
-	).length;
+	let activeBidsCount = await Bid.count({
+		where: { cardId: idCard, sellerId: currentUser.id },
+	});
 
 	if (activeBidsCount >= cardInCollection.nb) {
 		res.status(400).json({
@@ -58,24 +48,16 @@ function AddBid(req, res) {
 		return;
 	}
 
-	let newBid = {
-		id: bidsList.length > 0 ? bidsList[bidsList.length - 1].id + 1 : 1,
-		card_id: idCard,
-		seller_id: currentUser.id,
-		end_date: null,
-		bidder_id: null,
-		bid: req.body.bid || 0,
-	};
-
-	bidsList.push(newBid);
+	let newBid = await Bid.create({
+		cardId: idCard,
+		sellerId: currentUser.id,
+		endDate: null,
+		buyerId: null,
+		price: req.body.bid || 0,
+	});
 
 	cardInCollection.nb--;
-
-	let bidsData = JSON.stringify(bidsList, null, 2);
-	fs.writeFileSync("data/bid.json", bidsData);
-
-	let usersData = JSON.stringify(usersList, null, 2);
-	fs.writeFileSync("data/users.json", usersData);
+	await currentUser.save();
 
 	res.json({
 		message: "OK",
@@ -83,11 +65,7 @@ function AddBid(req, res) {
 	});
 }
 
-function PlaceBid(req, res) {
-	const fs = require("fs");
-	let rawdata = fs.readFileSync("data/users.json");
-	let usersList = JSON.parse(rawdata);
-
+async function PlaceBid(req, res) {
 	let token = req.headers["authorization"];
 
 	if (!token) {
@@ -107,13 +85,7 @@ function PlaceBid(req, res) {
 		return;
 	}
 
-	let currentUser = null;
-	for (let user of usersList) {
-		if (user.token === token) {
-			currentUser = user;
-			break;
-		}
-	}
+	let currentUser = await User.findOne({ where: { token: token } });
 
 	if (!currentUser) {
 		res.status(401).json({ message: "Erreur : Token invalide" });
@@ -126,17 +98,14 @@ function PlaceBid(req, res) {
 		return;
 	}
 
-	let bidsRawData = fs.readFileSync("data/bid.json");
-	let bidsList = JSON.parse(bidsRawData);
-
-	let bid = bidsList.find((b) => b.id === idBid);
+	let bid = await Bid.findByPk(idBid);
 
 	if (!bid) {
 		res.status(400).json({ message: "Erreur : Enchère introuvable" });
 		return;
 	}
 
-	if (bid.seller_id === currentUser.id) {
+	if (bid.sellerId === currentUser.id) {
 		res.status(400).json({
 			message:
 				"Erreur : Vous ne pouvez pas enchérir sur votre propre enchère",
@@ -144,14 +113,14 @@ function PlaceBid(req, res) {
 		return;
 	}
 
-	if (bid.bidder_id === currentUser.id) {
+	if (bid.buyerId === currentUser.id) {
 		res.status(400).json({
 			message: "Erreur : Vous êtes déjà le plus haut enchérisseur",
 		});
 		return;
 	}
 
-	if (bid.end_date && new Date(bid.end_date) < new Date()) {
+	if (bid.endDate && new Date(bid.endDate) < new Date()) {
 		res.status(400).json({ message: "Erreur : Cette enchère est fermée" });
 		return;
 	}
@@ -171,7 +140,7 @@ function PlaceBid(req, res) {
 		return;
 	}
 
-	if (newBidAmount <= bid.bid) {
+	if (newBidAmount <= bid.price) {
 		res.status(400).json({
 			message:
 				"Erreur : Votre enchère doit être supérieure à l'enchère actuelle",
@@ -188,55 +157,47 @@ function PlaceBid(req, res) {
 
 	// refund previous bidder if exists
 	if (bid.tempAmount) {
-		let previousBidder = usersList.find(
-			(u) => u.id === bid.tempAmount.idUser,
-		);
+		let previousBidder = await User.findByPk(bid.tempAmount.idUser);
 		if (previousBidder) {
 			previousBidder.paw += bid.tempAmount.amount;
+			await previousBidder.save();
 		}
 	}
 
 	// deduct new bidder's paw
 	currentUser.paw -= newBidAmount;
+	await currentUser.save();
 
 	let tempAmount = {
 		idUser: currentUser.id,
 		amount: newBidAmount,
 	};
 
-	bid.bid = newBidAmount;
-	bid.bidder_id = currentUser.id;
+	bid.price = newBidAmount;
+	bid.buyerId = currentUser.id;
 	bid.tempAmount = tempAmount;
-
-	let bidsData = JSON.stringify(bidsList, null, 2);
-	fs.writeFileSync("data/bid.json", bidsData);
+	await bid.save();
 
 	res.json({ message: "OK", data: bid });
 }
 
-function GetBids(req, res) {
-	const fs = require("fs");
-	let bidsRawData = fs.readFileSync("data/bid.json");
-	let bidsList = JSON.parse(bidsRawData);
+async function GetBids(req, res) {
+	let allBids = await Bid.findAll();
 
 	res.json({
 		message: "OK",
-		data: bidsList,
+		data: allBids,
 	});
 }
 
-function GetBid(req, res) {
-	const fs = require("fs");
-	let bidsRawData = fs.readFileSync("data/bid.json");
-	let bidsList = JSON.parse(bidsRawData);
-
+async function GetBid(req, res) {
 	let idBid = parseInt(req.params.id);
 	if (isNaN(idBid)) {
 		res.status(400).json({ message: "Erreur : ID d'enchère invalide" });
 		return;
 	}
 
-	let bid = bidsList.find((b) => b.id === idBid);
+	let bid = await Bid.findByPk(idBid);
 
 	if (!bid) {
 		res.status(404).json({ message: "Erreur : Enchère introuvable" });
@@ -249,11 +210,7 @@ function GetBid(req, res) {
 	});
 }
 
-function CloseBid(req, res) {
-	const fs = require("fs");
-	let rawdata = fs.readFileSync("data/users.json");
-	let usersList = JSON.parse(rawdata);
-
+async function CloseBid(req, res) {
 	let token = req.headers["authorization"];
 
 	if (!token) {
@@ -266,13 +223,7 @@ function CloseBid(req, res) {
 		return;
 	}
 
-	let currentUser = null;
-	for (let user of usersList) {
-		if (user.token === token) {
-			currentUser = user;
-			break;
-		}
-	}
+	let currentUser = await User.findOne({ where: { token: token } });
 
 	if (!currentUser) {
 		res.status(401).json({ message: "Erreur : Token invalide" });
@@ -285,31 +236,28 @@ function CloseBid(req, res) {
 		return;
 	}
 
-	let bidsRawData = fs.readFileSync("data/bid.json");
-	let bidsList = JSON.parse(bidsRawData);
-
-	let bid = bidsList.find((b) => b.id === idBid);
+	let bid = await Bid.findByPk(idBid);
 
 	if (!bid) {
 		res.status(400).json({ message: "Erreur : Enchère introuvable" });
 		return;
 	}
 
-	if (bid.seller_id !== currentUser.id) {
+	if (bid.sellerId !== currentUser.id) {
 		res.status(403).json({
 			message: "Erreur : Vous n'êtes pas le vendeur de cette enchère",
 		});
 		return;
 	}
 
-	if (bid.end_date) {
+	if (bid.endDate) {
 		res.status(400).json({
 			message: "Erreur : Cette enchère est déjà fermée",
 		});
 		return;
 	}
 
-	if (!bid.bidder_id) {
+	if (!bid.buyerId) {
 		res.status(400).json({
 			message:
 				"Erreur : Impossible de clôturer une enchère sans enchérisseur",
@@ -317,7 +265,7 @@ function CloseBid(req, res) {
 		return;
 	}
 
-	let winner = usersList.find((u) => u.id === bid.bidder_id);
+	let winner = await User.findByPk(bid.buyerId);
 	if (!winner) {
 		res.status(500).json({
 			message: "Erreur : Enchérisseur introuvable",
@@ -327,21 +275,18 @@ function CloseBid(req, res) {
 
 	// use tempAmount to get the actual amount paid by the winner
 	currentUser.paw += bid.tempAmount.amount;
+	await currentUser.save();
 
-	let winnerCard = winner.collection.find((c) => c.id === bid.card_id);
+	let winnerCard = winner.collection.find((c) => c.id === bid.cardId);
 	if (winnerCard) {
 		winnerCard.nb++;
 	} else {
-		winner.collection.push({ id: bid.card_id, nb: 1 });
+		winner.collection.push({ id: bid.cardId, nb: 1 });
 	}
+	await winner.save();
 
-	bid.end_date = new Date().toISOString();
-
-	let bidsData = JSON.stringify(bidsList, null, 2);
-	fs.writeFileSync("data/bid.json", bidsData);
-
-	let usersData = JSON.stringify(usersList, null, 2);
-	fs.writeFileSync("data/users.json", usersData);
+	bid.endDate = new Date();
+	await bid.save();
 
 	res.json({
 		message: "OK",
@@ -349,7 +294,7 @@ function CloseBid(req, res) {
 			bid: bid,
 			winner_id: winner.id,
 			winner_username: winner.username,
-			amount_paid: bid.bid,
+			amount_paid: bid.price,
 		},
 	});
 }

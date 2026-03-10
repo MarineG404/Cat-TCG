@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const bdd = require("../config/db.js");
 
-const Cards = bdd.define("Cards", {
+const Card = bdd.define("Card", {
 	id: {
 		type: DataTypes.INTEGER,
 		primaryKey: true,
@@ -17,4 +17,4 @@ const Cards = bdd.define("Cards", {
 	},
 });
 
-module.exports = Cards;
+module.exports = Card;

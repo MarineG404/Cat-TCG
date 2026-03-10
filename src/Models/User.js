@@ -23,7 +23,7 @@ const User = bdd.define("User", {
 		type: DataTypes.INTEGER,
 		allowNull: false,
 	},
-	tocken: {
+	token: {
 		type: DataTypes.STRING,
 		allowNull: true,
 	},

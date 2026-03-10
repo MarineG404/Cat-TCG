@@ -1,34 +1,26 @@
-function GetCards(req, res) {
-	const fs = require("fs");
-	let rawdata = fs.readFileSync("data/cards.json");
-	let cardsList = JSON.parse(rawdata);
+const Card = require("../Models/Card");
+const User = require("../Models/User");
+const Bid = require("../Models/Bid");
+
+async function GetCards(req, res) {
+	allCards = await Card.findAll();
 
 	res.json({
 		message: "OK",
-		data: cardsList,
+		data: allCards,
 	});
 }
 
-function OpenBooster(req, res) {
-	const fs = require("fs");
-	let rawdata = fs.readFileSync("data/cards.json");
-
+async function OpenBooster(req, res) {
 	let token = req.headers["authorization"];
 	if (!token) {
 		res.status(400).json({ message: "Erreur : Token manquant" });
 		return;
 	}
 
-	let usersRawData = fs.readFileSync("data/users.json");
-	let usersList = JSON.parse(usersRawData);
+	allUsers = await User.findAll();
 
-	let currentUser = null;
-	for (let user of usersList) {
-		if (user.token === token) {
-			currentUser = user;
-			break;
-		}
-	}
+	currentUser = await User.findOne({ where: { token: token } });
 
 	if (!currentUser) {
 		res.status(401).json({ message: "Erreur : Token invalide" });
@@ -36,7 +28,7 @@ function OpenBooster(req, res) {
 	}
 
 	if (currentUser.lastBooster) {
-		const delay = 5 // minutes
+		const delay = 5; // minutes
 		const timeSinceLastBooster = Date.now() - currentUser.lastBooster;
 
 		if (timeSinceLastBooster < delay * 60 * 1000) {
@@ -47,7 +39,7 @@ function OpenBooster(req, res) {
 		}
 	}
 
-	let cardsList = JSON.parse(rawdata);
+	let cardsList = await Card.findAll();
 
 	function drawCardByRarity() {
 		const random = Math.random() * 100;
@@ -86,8 +78,7 @@ function OpenBooster(req, res) {
 
 	currentUser.lastBooster = Date.now();
 
-	let data = JSON.stringify(usersList, null, 2);
-	fs.writeFileSync("data/users.json", data);
+	await currentUser.save();
 
 	res.json({
 		message: "OK",
@@ -95,9 +86,7 @@ function OpenBooster(req, res) {
 	});
 }
 
-function ConvertCard(req, res) {
-	const fs = require("fs");
-
+async function ConvertCard(req, res) {
 	let token = req.headers["authorization"];
 	if (!token) {
 		res.status(400).json({ message: "Erreur : Token manquant" });
@@ -116,11 +105,10 @@ function ConvertCard(req, res) {
 		return;
 	}
 
-	let usersRawData = fs.readFileSync("data/users.json");
-	let usersList = JSON.parse(usersRawData);
+	let allUsers = await User.findAll();
 
 	let currentUser = null;
-	for (let user of usersList) {
+	for (let user of allUsers) {
 		if (user.token === token) {
 			currentUser = user;
 			break;
@@ -141,10 +129,9 @@ function ConvertCard(req, res) {
 		return;
 	}
 
-	let bidsRawData = fs.readFileSync("data/bid.json");
-	let bidsList = JSON.parse(bidsRawData);
-	let activeBidsCount = bidsList.filter(
-		(bid) => bid.card_id === cardId && bid.seller_id === currentUser.id,
+	let allBids = await Bid.findAll();
+	let activeBidsCount = allBids.filter(
+		(bid) => bid.cardId === cardId && bid.sellerId === currentUser.id,
 	).length;
 
 	let availableCards = cardInCollection.nb - activeBidsCount;
@@ -157,9 +144,7 @@ function ConvertCard(req, res) {
 		return;
 	}
 
-	let cardsRawData = fs.readFileSync("data/cards.json");
-	let cardsList = JSON.parse(cardsRawData);
-	let card = cardsList.find((c) => c.id === cardId);
+	let card = await Card.findByPk(cardId);
 
 	if (!card) {
 		res.status(400).json({ message: "Erreur : Carte introuvable" });
@@ -193,8 +178,7 @@ function ConvertCard(req, res) {
 
 	currentUser.paw += pawValue;
 
-	let data = JSON.stringify(usersList, null, 2);
-	fs.writeFileSync("data/users.json", data);
+	await currentUser.save();
 
 	res.json({
 		message: "OK",
