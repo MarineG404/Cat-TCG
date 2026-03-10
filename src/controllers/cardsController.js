@@ -78,6 +78,8 @@ async function OpenBooster(req, res) {
 
 	currentUser.lastBooster = Date.now();
 
+	currentUser.changed("collection", true);
+
 	await currentUser.save();
 
 	res.json({
@@ -177,6 +179,9 @@ async function ConvertCard(req, res) {
 	}
 
 	currentUser.paw += pawValue;
+
+	// Marquer la collection comme modifiée pour que Sequelize détecte le changement
+	currentUser.changed("collection", true);
 
 	await currentUser.save();
 
