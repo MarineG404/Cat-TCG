@@ -1,0 +1,47 @@
+name: Generate Swagger Documentation
+
+on:
+    push:
+        branches:
+            - main
+            - master
+        paths:
+            - "src/config/swagger.js"
+            - "src/routes/**"
+            - "src/controllers/**"
+            - "scripts/generate-swagger.js"
+
+jobs:
+    generate-swagger:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "18"
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Generate swagger.json
+              run: node scripts/generate-swagger.js
+
+            - name: Check for changes
+              id: git-check
+              run: |
+                  git diff --exit-code docs/swagger.json || echo "changed=true" >> $GITHUB_OUTPUT
+
+            - name: Commit and push if changed
+              if: steps.git-check.outputs.changed == 'true'
+              run: |
+                  git config --local user.email "github-actions[bot]@users.noreply.github.com"
+                  git config --local user.name "github-actions[bot]"
+                  git add docs/swagger.json
+                  git commit -m "🤖 Mise à jour automatique de swagger.json"
+                  git push
